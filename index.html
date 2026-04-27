@@ -64,18 +64,25 @@ No logs · No tracking · Works everywhere
 
 <script>
 function connectVPN() {
-  const userAgent = navigator.userAgent.toLowerCase();
+  const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
 
-  const vlessLink = "vless://ТВОЙ_КОНФИГ";
+  const ua = navigator.userAgent.toLowerCase();
 
-  if (userAgent.includes("android")) {
+  if (ua.includes("android")) {
     window.location.href = vlessLink;
-  } else if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
-    alert("Откройте ссылку через клиент (Shadowrocket / Streisand)");
+
+    setTimeout(() => {
+      navigator.clipboard.writeText(vlessLink);
+      alert("Если не открылось — ссылка скопирована");
+    }, 1500);
+
+  } else if (ua.includes("iphone") || ua.includes("ipad")) {
+    alert("Открой через клиент (Shadowrocket / Streisand)");
     window.location.href = vlessLink;
+
   } else {
     navigator.clipboard.writeText(vlessLink);
-    alert("Ссылка скопирована. Вставьте её в клиент.");
+    alert("Ссылка скопирована");
   }
 }
 </script>
