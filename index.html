@@ -5,20 +5,6 @@
 <title>Radionodus</title>
 
 <style>
-
-.title {
-  font-size: 24px;
-  margin-bottom: 16px;
-  font-weight: normal;
-}
-
-.highlight {
-  margin-bottom: 24px;
-  font-size: 14px;
-  line-height: 1.6;
-  opacity: 0.85;
-}
-  
 body {
   margin: 0;
   background: #0b0f19;
@@ -31,14 +17,28 @@ body {
 }
 
 .container {
-  max-width: 500px;
+  max-width: 420px;
   padding: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  font-weight: normal;
+}
+
+.highlight {
+  margin-bottom: 20px;
+  font-size: 14px;
+  opacity: 0.85;
+  line-height: 1.6;
 }
 
 .terminal {
   background: #111827;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 10px;
   margin-bottom: 20px;
 }
 
@@ -46,10 +46,10 @@ body {
   display: inline-block;
   width: 8px;
   height: 1em;
-  background: #22c55e; /* яркий зеленый */
+  background: #22c55e;
   margin-left: 6px;
-  animation: blink 1.2s infinite;
   vertical-align: bottom;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink {
@@ -59,32 +59,35 @@ body {
 
 button {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   background: #22c55e;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
   margin-bottom: 12px;
-}
-
-button + button {
-  margin-top: 12px;
 }
 
 button.copy {
   background: #374151;
 }
 
-button {
-  opacity: 1;
-  pointer-events: auto;
+.install {
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.8;
 }
-  
+
+.install a {
+  color: #22c55e;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
 .note {
-  margin-top: 20px;
-  opacity: 0.7;
-  font-size: 14px;
+  margin-top: 16px;
+  font-size: 12px;
+  opacity: 0.6;
 }
 </style>
 </head>
@@ -93,52 +96,43 @@ button {
 
 <div class="container">
 
-<!-- 🧭 БЛОК УСТАНОВКИ -->
-<div id="installBlock">
+<div class="title">Radionodus</div>
 
-  <h1 class="title">Radionodus</h1>
-
-  <div class="highlight">
-    We don’t log. We don’t track. We don’t sell data.
-  </div>
-
-  <div class="note">
-    1. Install client<br>
-    2. Come back to this page<br>
-    3. Press CONNECT
-  </div>
-
-  <button onclick="openAndroid()">GET ANDROID</button>
-  <button onclick="openIOS()" class="copy">GET iOS</button>
-
+<div class="highlight">
+No logs · No tracking · No user data
 </div>
 
-<!-- ⚡ БЛОК ПОДКЛЮЧЕНИЯ -->
-<div id="connectBlock" style="display:none;">
+<div class="terminal">
+$ <span id="typed"></span><span class="cursor"></span>
+</div>
 
-  <h1 class="title">Radionodus</h1>
+<button onclick="connectVPN()">CONNECT</button>
 
-  <div class="terminal">
-    $ <span id="typed"></span><span class="cursor"></span>
-  </div>
+<div class="install">
+No client?
+<a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> ·
+<a href="ТВОЯ_IOS_ССЫЛКА">iOS</a>
+</div>
 
-  <button onclick="connectVPN()">CONNECT</button>
-  <button onclick="copyVPN()" class="copy">COPY CONFIG</button>
+<button onclick="copyVPN()" class="copy">COPY CONFIG</button>
 
-  <div class="note">
-    Connected. Private. No logs.
-  </div>
+<div class="note">
+If connection doesn’t open — use COPY
+</div>
 
 </div>
 
 <script>
 
+// 👉 ВСТАВЬ СВОЮ РЕАЛЬНУЮ ССЫЛКУ
 const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
 
+// подключение
 function connectVPN() {
   window.location.href = vlessLink;
 }
 
+// копирование
 function copyVPN() {
   const input = document.createElement("input");
   input.value = vlessLink;
@@ -150,18 +144,7 @@ function copyVPN() {
   alert("Copied");
 }
 
-// 📱 переход в стор
-function openAndroid() {
-  localStorage.setItem("radionodus_installed", "true");
-  window.location.href = "https://play.google.com/store/apps/details?id=com.v2raytun.android";
-}
-
-function openIOS() {
-  localStorage.setItem("radionodus_installed", "true");
-  window.location.href = "ТВОЯ_IOS_ССЫЛКА";
-}
-
-// ⌨️ печать текста
+// печатающийся текст
 const text = "radionodus connect";
 let i = 0;
 
@@ -173,14 +156,7 @@ function typeWriter() {
   }
 }
 
-// 🔄 переключение состояния
-window.onload = function () {
-  if (localStorage.getItem("radionodus_installed")) {
-    document.getElementById("installBlock").style.display = "none";
-    document.getElementById("connectBlock").style.display = "block";
-    typeWriter();
-  }
-};
+window.onload = typeWriter;
 
 </script>
 
