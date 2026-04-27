@@ -65,7 +65,20 @@
 
 <script>
 function connectVPN() {
-  alert("Вставь сюда свой VLESS конфиг");
+  const userAgent = navigator.userAgent.toLowerCase();
+
+  const vlessLink = "vless://ТВОЙ_КОНФИГ";
+
+  if (userAgent.includes("android")) {
+    window.location.href = vlessLink;
+  } else if (userAgent.includes("iphone") || userAgent.includes("ipad")) {
+    alert("Откройте ссылку через клиент (Shadowrocket / Streisand)");
+    window.location.href = vlessLink;
+  } else {
+    navigator.clipboard.writeText(vlessLink);
+    alert("Ссылка скопирована. Вставьте её в клиент.");
+  }
+}
 }
 </script>
 
