@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Radionodus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0b0f19;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      background: #2563eb;
+      border: none;
+      padding: 16px;
+      font-size: 18px;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Radionodus</h1>
+
+  <button onclick="connectVPN()">🔘 Подключиться</button>
+
+  <div class="note">
+    Android / iPhone — нажмите кнопку<br>
+    Если не сработает — используйте QR
+  </div>
+</div>
+
+<script>
+function connectVPN() {
+  alert("Вставь сюда свой VLESS конфиг");
+}
+</script>
+
+</body>
+</html>
