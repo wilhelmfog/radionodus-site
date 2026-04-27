@@ -22,24 +22,35 @@ body {
   text-align: center;
 }
 
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lang {
+  font-size: 12px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
 .title {
   font-size: 24px;
-  margin-bottom: 16px;
-  font-weight: normal;
+  margin-bottom: 10px;
 }
 
 .highlight {
-  margin-bottom: 20px;
   font-size: 14px;
   opacity: 0.85;
-  line-height: 1.6;
+  margin-bottom: 16px;
+  line-height: 1.5;
 }
 
 .terminal {
   background: #111827;
-  padding: 14px;
+  padding: 12px;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .cursor {
@@ -68,12 +79,8 @@ button {
   margin-bottom: 12px;
 }
 
-button.copy {
-  background: #374151;
-}
-
 .install {
-  margin: 18px 0 8px 0; /* 👈 ключевое */
+  margin: 12px 0;
   font-size: 13px;
   opacity: 0.8;
 }
@@ -85,17 +92,9 @@ button.copy {
 }
 
 .note {
-  margin-top: 16px;
+  margin-top: 12px;
   font-size: 12px;
-  opacity: 0.6;
-}
-
-.copy-block {
-  margin-top: 8px;
-}
-
-.arrow {
-  color: #22c55e;
+  opacity: 0.7;
 }
 </style>
 </head>
@@ -104,49 +103,47 @@ button.copy {
 
 <div class="container">
 
+<div class="topbar">
+  <div></div>
+  <div class="lang" onclick="toggleLang()">EN / RU</div>
+</div>
+
 <div class="title">Radionodus</div>
 
-<div class="highlight">
-No logs · No tracking · No user data
+<div class="highlight" id="slogan">
+Manual connection. Full control. No logs.
 </div>
 
 <div class="terminal">
 $ <span id="typed"></span><span class="cursor"></span>
 </div>
 
-<button onclick="connectVPN()">CONNECT</button>
+<button onclick="copyVPN()" id="copyBtn">COPY CONFIG</button>
 
-<div class="install">
-No client? <span class="arrow">Download →</span>
+<div class="note" id="steps">
+1. Install app<br>
+2. Copy config<br>
+3. Open app → Import → Paste → Connect
+</div>
+
+<div class="install" id="download">
+No client? Download →
 <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> ·
 <a href="ТВОЯ_IOS_ССЫЛКА">iOS</a>
 </div>
 
-
-<div class="copy-block">
-  <button onclick="copyVPN()" class="copy">COPY CONFIG</button>
-  <div class="note">
-    If connection doesn’t open — use COPY
-  </div>
+<div class="note" id="hint">
+In app: tap "+" → Import config → Paste
 </div>
 
 </div>
 
 <script>
 
-// 👉 ВСТАВЬ СВОЮ РЕАЛЬНУЮ ССЫЛКУ
+// 👉 вставь свою ссылку
 const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
 
-// подключение
-function connectVPN() {
-  window.location.href = vlessLink;
-
-  setTimeout(() => {
-    alert("If nothing happened — use COPY");
-  }, 1200);
-}
-
-// копирование
+// COPY — главный сценарий
 function copyVPN() {
   const input = document.createElement("input");
   input.value = vlessLink;
@@ -155,10 +152,12 @@ function copyVPN() {
   document.execCommand("copy");
   document.body.removeChild(input);
 
-  alert("Copied");
+  alert(currentLang === "en"
+    ? "Copied. Open app and paste config."
+    : "Скопировано. Открой приложение и вставь конфиг.");
 }
 
-// печатающийся текст
+// печать
 const text = "radionodus connect";
 let i = 0;
 
@@ -171,6 +170,46 @@ function typeWriter() {
 }
 
 window.onload = typeWriter;
+
+// 🌍 язык
+let currentLang = "en";
+
+function toggleLang() {
+  if (currentLang === "en") {
+    currentLang = "ru";
+
+    document.getElementById("slogan").innerHTML =
+      "Ручное подключение. Полный контроль. Без логов.";
+
+    document.getElementById("copyBtn").innerHTML = "СКОПИРОВАТЬ КОНФИГ";
+
+    document.getElementById("steps").innerHTML =
+      "1. Установи приложение<br>2. Скопируй конфиг<br>3. Открой приложение → Импорт → Вставить → Подключить";
+
+    document.getElementById("download").innerHTML =
+      'Нет приложения? Скачать → <a href="ТВОЯ_ANDROID_ССЫЛКА">Android</a> · <a href="ТВОЯ_IOS_ССЫЛКА">iOS</a>';
+
+    document.getElementById("hint").innerHTML =
+      'В приложении: нажми "+" → Импорт → Вставить';
+
+  } else {
+    currentLang = "en";
+
+    document.getElementById("slogan").innerHTML =
+      "Manual connection. Full control. No logs.";
+
+    document.getElementById("copyBtn").innerHTML = "COPY CONFIG";
+
+    document.getElementById("steps").innerHTML =
+      "1. Install app<br>2. Copy config<br>3. Open app → Import → Paste → Connect";
+
+    document.getElementById("download").innerHTML =
+      'No client? Download → <a href="ТВОЯ_ANDROID_ССЫЛКА">Android</a> · <a href="ТВОЯ_IOS_ССЫЛКА">iOS</a>';
+
+    document.getElementById("hint").innerHTML =
+      'In app: tap "+" → Import config → Paste';
+  }
+}
 
 </script>
 
