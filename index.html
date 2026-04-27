@@ -46,15 +46,18 @@ body {
 
 .cursor {
   display: inline-block;
-  margin-left: 4px;
-  animation: blink 1.2s infinite;
+  width: 8px;
+  height: 1em;
+  background: #22c55e; /* яркий зеленый */
+  margin-left: 6px;
+  animation: blink 1s infinite;
+  vertical-align: bottom;
 }
 
 @keyframes blink {
   0%, 50%, 100% { opacity: 1; }
   25%, 75% { opacity: 0; }
 }
-
 
 button {
   width: 100%;
@@ -99,7 +102,7 @@ button {
 </div>
 
 <div class="terminal">
-$ radionodus connect<span class="cursor">▌</span>
+$ radionodus connect <span class="cursor"></span>
 </div>
 
 <button onclick="connectVPN()">CONNECT</button>
