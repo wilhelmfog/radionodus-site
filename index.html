@@ -73,7 +73,7 @@ button.copy {
 }
 
 .install {
-  margin-top: 10px;
+  margin: 18px 0 8px 0; /* 👈 ключевое */
   font-size: 13px;
   opacity: 0.8;
 }
@@ -88,6 +88,14 @@ button.copy {
   margin-top: 16px;
   font-size: 12px;
   opacity: 0.6;
+}
+
+.copy-block {
+  margin-top: 8px;
+}
+
+.arrow {
+  color: #22c55e;
 }
 </style>
 </head>
@@ -109,15 +117,17 @@ $ <span id="typed"></span><span class="cursor"></span>
 <button onclick="connectVPN()">CONNECT</button>
 
 <div class="install">
-No client?
+No client? <span class="arrow">Download →</span>
 <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> ·
 <a href="ТВОЯ_IOS_ССЫЛКА">iOS</a>
 </div>
 
-<button onclick="copyVPN()" class="copy">COPY CONFIG</button>
 
-<div class="note">
-If connection doesn’t open — use COPY
+<div class="copy-block">
+  <button onclick="copyVPN()" class="copy">COPY CONFIG</button>
+  <div class="note">
+    If connection doesn’t open — use COPY
+  </div>
 </div>
 
 </div>
@@ -130,6 +140,10 @@ const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8
 // подключение
 function connectVPN() {
   window.location.href = vlessLink;
+
+  setTimeout(() => {
+    alert("If nothing happened — use COPY");
+  }, 1200);
 }
 
 // копирование
