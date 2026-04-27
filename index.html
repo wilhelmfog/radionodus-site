@@ -80,21 +80,26 @@ button {
 }
 
 .install {
-  margin: 12px 0;
-  font-size: 13px;
-  opacity: 0.8;
+  margin: 16px 0 10px 0;
+  font-size: 14px;        /* как у highlight */
+  opacity: 0.95;
 }
 
 .install a {
   color: #22c55e;
   text-decoration: none;
-  margin: 0 6px;
+  margin: 0 8px;
+  font-size: 15px;        /* чуть крупнее текста */
 }
 
 .note {
   margin-top: 12px;
   font-size: 12px;
   opacity: 0.7;
+}
+
+.dl {
+  color: #22c55e;
 }
 </style>
 </head>
@@ -127,7 +132,7 @@ $ <span id="typed"></span><span class="cursor"></span>
 </div>
 
 <div class="install" id="download">
-No client? Download →
+No client? <span class="dl">Download →</span>
 <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> ·
 <a href="ТВОЯ_IOS_ССЫЛКА">iOS</a>
 </div>
