@@ -100,7 +100,7 @@ button {
 </div>
 
 <div class="terminal">
-$ radionodus connect <span class="cursor"></span>
+  $ <span id="typed"></span><span class="cursor"></span>
 </div>
 
 <button onclick="connectVPN()">CONNECT</button>
@@ -115,6 +115,19 @@ $ radionodus connect <span class="cursor"></span>
 </div>
 
 <script>
+const text = "radionodus connect";
+let i = 0;
+
+function typeWriter() {
+  if (i < text.length) {
+    document.getElementById("typed").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeWriter, 50);
+  }
+}
+
+window.onload = typeWriter;
+  
 function connectVPN() {
   const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
 
