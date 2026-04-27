@@ -93,28 +93,75 @@ button {
 
 <div class="container">
 
-<h1 class="title">Radionodus</h1>
+<!-- 🧭 БЛОК УСТАНОВКИ -->
+<div id="installBlock">
 
-<div class="highlight">
-  No logs · No tracking · No data collection
+  <h1 class="title">Radionodus</h1>
+
+  <div class="highlight">
+    We don’t log. We don’t track. We don’t sell data.
+  </div>
+
+  <div class="note">
+    1. Install client<br>
+    2. Come back to this page<br>
+    3. Press CONNECT
+  </div>
+
+  <button onclick="openAndroid()">GET ANDROID</button>
+  <button onclick="openIOS()" class="copy">GET iOS</button>
+
 </div>
 
-<div class="terminal">
-  $ <span id="typed"></span><span class="cursor"></span>
-</div>
+<!-- ⚡ БЛОК ПОДКЛЮЧЕНИЯ -->
+<div id="connectBlock" style="display:none;">
 
-<button onclick="connectVPN()">CONNECT</button>
-<button onclick="copyVPN()" class="copy">COPY CONFIG</button>
+  <h1 class="title">Radionodus</h1>
 
-<div class="note">
-1. Установи клиент (Nekobox / V2Ray)<br>
-2. Нажми CONNECT или COPY<br>
-3. Вставь и подключись
-</div>
+  <div class="terminal">
+    $ <span id="typed"></span><span class="cursor"></span>
+  </div>
+
+  <button onclick="connectVPN()">CONNECT</button>
+  <button onclick="copyVPN()" class="copy">COPY CONFIG</button>
+
+  <div class="note">
+    Connected. Private. No logs.
+  </div>
 
 </div>
 
 <script>
+
+const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
+
+function connectVPN() {
+  window.location.href = vlessLink;
+}
+
+function copyVPN() {
+  const input = document.createElement("input");
+  input.value = vlessLink;
+  document.body.appendChild(input);
+  input.select();
+  document.execCommand("copy");
+  document.body.removeChild(input);
+
+  alert("Copied");
+}
+
+// 📱 переход в стор
+function openAndroid() {
+  localStorage.setItem("radionodus_installed", "true");
+  window.location.href = "ТВОЯ_ANDROID_ССЫЛКА";
+}
+
+function openIOS() {
+  localStorage.setItem("radionodus_installed", "true");
+  window.location.href = "ТВОЯ_IOS_ССЫЛКА";
+}
+
+// ⌨️ печать текста
 const text = "radionodus connect";
 let i = 0;
 
@@ -126,43 +173,15 @@ function typeWriter() {
   }
 }
 
-window.onload = typeWriter;
-  
-function connectVPN() {
-  const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
-
-  const ua = navigator.userAgent.toLowerCase();
-
-  if (ua.includes("android")) {
-    window.location.href = vlessLink;
-
-    setTimeout(() => {
-      navigator.clipboard.writeText(vlessLink);
-      alert("Если не открылось — ссылка скопирована");
-    }, 1500);
-
-  } else if (ua.includes("iphone") || ua.includes("ipad")) {
-    alert("Открой через клиент (Shadowrocket / Streisand)");
-    window.location.href = vlessLink;
-
-  } else {
-    navigator.clipboard.writeText(vlessLink);
-    alert("Ссылка скопирована");
+// 🔄 переключение состояния
+window.onload = function () {
+  if (localStorage.getItem("radionodus_installed")) {
+    document.getElementById("installBlock").style.display = "none";
+    document.getElementById("connectBlock").style.display = "block";
+    typeWriter();
   }
-}
+};
 
-function copyVPN() {
-  const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
-
-  const input = document.createElement("input");
-  input.value = vlessLink;
-  document.body.appendChild(input);
-  input.select();
-  document.execCommand("copy");
-  document.body.removeChild(input);
-
-  alert("Скопировано");
-}
 </script>
 
 </body>
