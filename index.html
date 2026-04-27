@@ -43,6 +43,10 @@ button + button {
   margin-top: 12px;
 }
 
+button.copy {
+  background: #374151;
+}
+  
 .note {
   margin-top: 20px;
   opacity: 0.7;
@@ -60,7 +64,7 @@ $ radionodus connect
 </div>
 
 <button onclick="connectVPN()">CONNECT</button>
-<button onclick="copyVPN()">COPY CONFIG</button>
+<button onclick="copyVPN()" class="copy">COPY CONFIG</button>
 
 <div class="note">
 No logs · No tracking · Works everywhere
