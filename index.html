@@ -95,6 +95,19 @@ function connectVPN() {
     alert("Ссылка скопирована");
   }
 }
+
+function copyVPN() {
+  const vlessLink = "vless://ТВОЯ_ССЫЛКА";
+
+  const input = document.createElement("input");
+  input.value = vlessLink;
+  document.body.appendChild(input);
+  input.select();
+  document.execCommand("copy");
+  document.body.removeChild(input);
+
+  alert("Скопировано");
+}
 </script>
 
 </body>
