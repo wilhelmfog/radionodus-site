@@ -94,7 +94,7 @@ button {
 
 .note {
   margin-top: 12px;
-  font-size: 12px;
+  font-size: 14px;
   opacity: 0.7;
 }
 
@@ -146,10 +146,10 @@ RADIONODUS: You are on the air!
 
 <script>
 
-// 👉 вставь свою ссылку
+
 const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
 
-// COPY — главный сценарий
+
 function copyVPN() {
   const input = document.createElement("input");
   input.value = vlessLink;
@@ -163,7 +163,7 @@ function copyVPN() {
     : "Скопировано. Открой приложение и вставь конфиг.");
 }
 
-// печать
+
 const text = "radionodus connect";
 let i = 0;
 
@@ -177,7 +177,7 @@ function typeWriter() {
 
 window.onload = typeWriter;
 
-// 🌍 язык
+
 let currentLang = "en";
 
 function toggleLang() {
@@ -196,7 +196,7 @@ function toggleLang() {
       'Нет приложения? Скачать → <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> · <a href="Тhttps://apps.apple.com/ru/app/onexray/id6745748773">iOS</a>';
 
     document.getElementById("hint").innerHTML =
-      'В приложении: нажми "+" → Вставить из буфера обмена  → Подключить (Start)<br>RADIONODUS: Вы ы эфире!';
+      'В приложении: нажми "+" → Вставить из буфера обмена  → Подключить (Start)<br>RADIONODUS: Вы в эфире!';
 
   } else {
     currentLang = "en";
