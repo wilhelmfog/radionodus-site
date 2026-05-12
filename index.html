@@ -77,6 +77,15 @@ button {
   font-size: 15px;
   cursor: pointer;
   margin-bottom: 12px;
+  color: #0b0f19;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .install {
@@ -101,6 +110,12 @@ button {
 .dl {
   color: #22c55e;
 }
+
+.error {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 8px;
+}
 </style>
 </head>
 
@@ -108,62 +123,123 @@ button {
 
 <div class="container">
 
-<div class="topbar">
-  <div></div>
-  <div class="lang" onclick="toggleLang()">EN / RU</div>
-</div>
+  <div class="topbar">
+    <div></div>
+    <div class="lang" onclick="toggleLang()">EN / RU</div>
+  </div>
 
-<div class="title">Radionodus</div>
+  <div class="title">Radionodus</div>
 
-<div class="highlight" id="slogan">
-Manual connection. Full control. No logs.
-</div>
+  <div class="highlight" id="slogan">
+    Manual connection. Full control. No logs.
+  </div>
 
-<div class="terminal">
-$ <span id="typed"></span><span class="cursor"></span>
-</div>
+  <div class="terminal">
+    $ <span id="typed"></span><span class="cursor"></span>
+  </div>
 
-<button onclick="copyVPN()" id="copyBtn">COPY CONFIG</button>
+  <button onclick="copyVPN()" id="copyBtn">COPY CONFIG</button>
 
-<div class="note" id="steps">
-1. Copy config - your private link<br>
-2. Install App<br>
-3. Open app → Import → Paste from Clipboard (Clipboard) → Connect
-</div>
+  <div class="error" id="errorMsg" style="display:none"></div>
 
-<div class="install" id="download">
-No client? <span class="dl">Download →</span>
-<a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> ·
-<a href="https://apps.apple.com/ru/app/onexray/id6745748773">iOS</a>
-</div>
+  <div class="note" id="steps">
+    1. Copy config - your private link<br>
+    2. Install App<br>
+    3. Open app → Import → Paste from Clipboard (Clipboard) → Connect
+  </div>
 
-<div class="note" id="hint">
-In app: tap "+" → Import config → Paste from clipboard (Buffer) → Start<br>  
-RADIONODUS: You are on the air!
-</div>
+  <div class="install" id="download">
+    No client? <span class="dl">Download →</span>
+    <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> ·
+    <a href="https://apps.apple.com/ru/app/onexray/id6745748773">iOS</a>
+  </div>
+
+  <div class="note" id="hint">
+    In app: tap "+" → Import config → Paste from clipboard (Buffer) → Start<br>
+    RADIONODUS: You are on the air!
+  </div>
 
 </div>
 
 <script>
 
+const API_URL = "https://api.radionodus.net";
 
-const vlessLink = "vless://6b74409c-3f5d-4dd7-9ec1-2e445a7a0f35@89.124.108.232:8443?type=ws&encryption=none&path=%2Fradionodus&host=&security=none#test-user";
+// Кэшируем ссылку в сессии — чтобы не дёргать API при каждом клике
+let cachedSubUrl = null;
 
+async function copyVPN() {
+  const btn = document.getElementById("copyBtn");
+  const errorMsg = document.getElementById("errorMsg");
+  errorMsg.style.display = "none";
 
-function copyVPN() {
-  const input = document.createElement("input");
-  input.value = vlessLink;
-  document.body.appendChild(input);
-  input.select();
-  document.execCommand("copy");
-  document.body.removeChild(input);
+  // Если ссылка уже получена — просто копируем
+  if (cachedSubUrl) {
+    copyToClipboard(cachedSubUrl);
+    return;
+  }
 
-  alert(currentLang === "en"
-    ? "Copied. Open app and paste config."
-    : "Скопировано. Открой приложение и вставь конфиг.");
+  // Блокируем кнопку пока идёт запрос
+  btn.disabled = true;
+  btn.textContent = currentLang === "en" ? "CONNECTING..." : "ПОДКЛЮЧЕНИЕ...";
+
+  try {
+    const response = await fetch(`${API_URL}/get-config`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (response.status === 429) {
+      throw new Error(currentLang === "en"
+        ? "Too many requests. Try again in an hour."
+        : "Слишком много запросов. Попробуй через час.");
+    }
+
+    if (!response.ok) {
+      throw new Error(currentLang === "en"
+        ? "Server error. Try again later."
+        : "Ошибка сервера. Попробуй позже.");
+    }
+
+    const data = await response.json();
+    cachedSubUrl = data.subscription_url;
+    copyToClipboard(cachedSubUrl);
+
+  } catch (err) {
+    errorMsg.textContent = err.message;
+    errorMsg.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === "en" ? "COPY CONFIG" : "СКОПИРОВАТЬ КОНФИГ";
+  }
 }
 
+function copyToClipboard(text) {
+  // Современный способ
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopied();
+    });
+  } else {
+    // Fallback для старых браузеров
+    const input = document.createElement("input");
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+    showCopied();
+  }
+}
 
+function showCopied() {
+  const btn = document.getElementById("copyBtn");
+  const prev = btn.textContent;
+  btn.textContent = currentLang === "en" ? "✓ COPIED!" : "✓ СКОПИРОВАНО!";
+  setTimeout(() => { btn.textContent = prev; }, 2000);
+}
+
+// Печатающий текст в терминале
 const text = "radionodus connect";
 let i = 0;
 
@@ -177,41 +253,28 @@ function typeWriter() {
 
 window.onload = typeWriter;
 
-
+// Переключение языка
 let currentLang = "en";
 
 function toggleLang() {
   if (currentLang === "en") {
     currentLang = "ru";
-
-    document.getElementById("slogan").innerHTML =
-      "Ручное подключение. Полный контроль. Без логов.";
-
+    document.getElementById("slogan").innerHTML = "Ручное подключение. Полный контроль. Без логов.";
     document.getElementById("copyBtn").innerHTML = "СКОПИРОВАТЬ КОНФИГ";
-
     document.getElementById("steps").innerHTML =
       "1. Скопируй свой конфиг кнопкой<br>2. Скачай приложение<br>3. Открой приложение → Импорт ( + ) → Вставить из буфера обмена (Буфер) → Подключить";
-
     document.getElementById("download").innerHTML =
-      'Нет приложения? Скачать → <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> · <a href="Тhttps://apps.apple.com/ru/app/onexray/id6745748773">iOS</a>';
-
+      'Нет приложения? Скачать → <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> · <a href="https://apps.apple.com/ru/app/onexray/id6745748773">iOS</a>';
     document.getElementById("hint").innerHTML =
-      'В приложении: нажми "+" → Вставить из буфера обмена (Буфер)  → Подключить (Start)<br>RADIONODUS: Вы в эфире!';
-
+      'В приложении: нажми "+" → Вставить из буфера обмена (Буфер) → Подключить (Start)<br>RADIONODUS: Вы в эфире!';
   } else {
     currentLang = "en";
-
-    document.getElementById("slogan").innerHTML =
-      "Manual connection. Full control. No logs.";
-
+    document.getElementById("slogan").innerHTML = "Manual connection. Full control. No logs.";
     document.getElementById("copyBtn").innerHTML = "COPY CONFIG";
-
     document.getElementById("steps").innerHTML =
       "1. Copy config<br>2. Install app<br>3. Open app → Import ( + ) → Paste from Clipboard (Buffer) → Connect";
-
     document.getElementById("download").innerHTML =
       'No client? Download → <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android">Android</a> · <a href="https://apps.apple.com/ru/app/onexray/id6745748773">iOS</a>';
-
     document.getElementById("hint").innerHTML =
       'In app: tap "+" → Import config → Paste from ClipBoard (Buffer) → Start<br>RADIONODUS: You are on the air';
   }
