@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radionodus — Как подключиться</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0b0f19;
+  color: #e5e7eb;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+.header {
+  padding: 20px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-title {
+  font-size: 15px;
+  color: #22c55e;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.lang {
+  font-size: 12px;
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 4px 8px;
+  border: 1px solid #374151;
+  border-radius: 6px;
+}
+.content {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ПЕРЕКЛЮЧАТЕЛЬ ПЛАТФОРМЫ */
+.platform-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.tab {
+  flex: 1;
+  padding: 12px;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  color: #6b7280;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+.tab.active {
+  background: #1a2e1a;
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+/* КНОПКА СКОПИРОВАТЬ */
+.btn-green {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: #22c55e;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  color: #0b0f19;
+  font-family: inherit;
+  font-weight: bold;
+  transition: opacity 0.2s;
+  text-align: center;
+}
+.btn-green:disabled { opacity: 0.6; cursor: not-allowed; }
+.error {
+  color: #ef4444;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* КНОПКА СКАЧАТЬ */
+.download-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: #111827;
+  border: 1px solid #22c55e;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  color: #22c55e;
+  font-family: inherit;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+.download-btn:hover { opacity: 0.8; }
+
+/* ШАГИ */
+.steps-title {
+  font-size: 12px;
+  opacity: 0.4;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+.step-num {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: #1a2e1a;
+  border: 1px solid #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #22c55e;
+  font-weight: bold;
+}
+.step-body { flex: 1; padding-top: 4px; }
+.step-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #f9fafb;
+  margin-bottom: 4px;
+}
+.step-desc {
+  font-size: 13px;
+  opacity: 0.6;
+  line-height: 1.7;
+}
+.step-desc b { color: #e5e7eb; opacity: 1; }
+.step-note {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #22c55e;
+  opacity: 0.8;
+  background: #111827;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border-left: 2px solid #22c55e;
+}
+
+/* ПРОВЕРКА */
+.check-section {
+  background: #111827;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.check-title {
+  font-size: 14px;
+  color: #22c55e;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.check-desc {
+  font-size: 13px;
+  opacity: 0.55;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.btn-tg {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid #2563eb;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #60a5fa;
+  font-family: inherit;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* FAQ */
+.faq-title {
+  font-size: 12px;
+  opacity: 0.4;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+.faq-item {
+  margin-bottom: 14px;
+  border-bottom: 1px solid #1f2937;
+  padding-bottom: 14px;
+}
+.faq-q {
+  font-size: 14px;
+  color: #f9fafb;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.faq-a {
+  font-size: 13px;
+  opacity: 0.55;
+  line-height: 1.6;
+}
+
+/* НИЖНЕЕ МЕНЮ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #111827;
+  border-top: 1px solid #1f2937;
+  display: flex;
+  z-index: 100;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 4px;
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 10px;
+  gap: 4px;
+}
+.nav-item.active { color: #22c55e; }
+.nav-icon { font-size: 18px; line-height: 1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title" id="headerTitle">📖 КАК ПОДКЛЮЧИТЬСЯ</div>
+  <div class="lang" onclick="toggleLang()">RU / EN</div>
+</div>
+
+<div class="content">
+
+  <!-- КНОПКА СКОПИРОВАТЬ -->
+  <br>
+  <button class="btn-green" onclick="copyVPN()" id="copyBtn">СКОПИРОВАТЬ КОНФИГ</button>
+  <div class="error" id="errorMsg" style="display:none"></div>
+
+  <!-- ПЕРЕКЛЮЧАТЕЛЬ ПЛАТФОРМЫ -->
+  <div class="platform-tabs">
+    <button class="tab active" onclick="showPlatform('android')" id="tabAndroid">🤖 Android</button>
+    <button class="tab" onclick="showPlatform('ios')" id="tabIOS">🍎 iOS</button>
+  </div>
+
+  <!-- ANDROID -->
+  <div id="android">
+    <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android"
+       target="_blank" class="download-btn" id="dlAndroid">
+      ⬇️ Скачать v2rayTun для Android
+    </a>
+
+    <div class="steps-title" id="stepsTitle">Пошаговая инструкция</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title" id="a1t">Скопируй конфиг</div>
+        <div class="step-desc" id="a1d">
+          Нажми кнопку <b>СКОПИРОВАТЬ КОНФИГ</b> вверху этой страницы.<br>
+          Ссылка скопируется автоматически — ничего больше делать не нужно.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title" id="a2t">Скачай и открой v2rayTun</div>
+        <div class="step-desc" id="a2d">
+          Нажми кнопку <b>Скачать v2rayTun</b> выше.<br>
+          Установи приложение как обычно и открой его.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title" id="a3t">Нажми + в правом верхнем углу</div>
+        <div class="step-desc" id="a3d">
+          В приложении найди кнопку <b>+</b> — она находится в правом верхнем углу экрана.<br>
+          Нажми на неё.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title" id="a4t">Выбери «Импорт из буфера обмена»</div>
+        <div class="step-desc" id="a4d">
+          Появится меню. Выбери пункт <b>Импорт из буфера обмена</b>.<br>
+          Приложение само возьмёт скопированную ссылку.
+        </div>
+        <div class="step-note" id="a4n">
+          💡 Если пункт не появился — вернись на шаг 1 и снова нажми СКОПИРОВАТЬ КОНФИГ
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title" id="a5t">В списке появится новое соединение</div>
+        <div class="step-desc" id="a5d">
+          Ты увидишь строчку с названием — это твоё личное подключение.<br>
+          Нажми на неё, затем нажми большую кнопку <b>Старт</b>.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title" id="a6t">Разреши VPN подключение</div>
+        <div class="step-desc" id="a6d">
+          Телефон покажет запрос — <b>«Разрешить приложению создать VPN-подключение?»</b><br>
+          Нажми <b>Разрешить</b>. Это обязательный шаг — без него не работает.
+        </div>
+        <div class="step-note" id="a6n">
+          🔒 Это стандартный запрос системы Android. Приложение не получает доступ к твоим данным.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title" id="a7t">Готово — ты в эфире!</div>
+        <div class="step-desc" id="a7d">
+          В строке статуса появится значок ключа 🔑 — это значит подключение активно.<br>
+          Теперь можно открывать любые сайты.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS -->
+  <div id="ios" style="display:none">
+    <a href="https://apps.apple.com/ru/app/onexray/id6745748773"
+       target="_blank" class="download-btn" id="dlIOS">
+      ⬇️ Скачать OneXray для iOS
+    </a>
+
+    <div class="steps-title" id="stepsTitle2">Пошаговая инструкция</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title" id="i1t">Скопируй конфиг</div>
+        <div class="step-desc" id="i1d">
+          Нажми кнопку <b>СКОПИРОВАТЬ КОНФИГ</b> вверху этой страницы.<br>
+          Ссылка скопируется автоматически.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title" id="i2t">Скачай и открой OneXray</div>
+        <div class="step-desc" id="i2d">
+          Нажми кнопку <b>Скачать OneXray</b> выше.<br>
+          Установи приложение и открой его.<br>
+          Приложение на английском — это нормально, всё интуитивно понятно.
+        </div>
+        <div class="step-note" id="i2n">
+          💡 Если App Store предложит выбрать регион — выбери любой, это не важно
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title" id="i3t">При первом запуске — разреши всё</div>
+        <div class="step-desc" id="i3d">
+          Приложение попросит несколько разрешений:<br>
+          • Уведомления — нажми <b>Allow</b> (Разрешить)<br>
+          • Доступ к сети — нажми <b>Allow</b><br>
+          Это стандартные запросы для таких приложений.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title" id="i4t">Нажми + в правом верхнем углу</div>
+        <div class="step-desc" id="i4d">
+          Найди кнопку <b>+</b> в правом верхнем углу экрана и нажми её.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title" id="i5t">Выбери Import from clipboard</div>
+        <div class="step-desc" id="i5d">
+          Появится меню. Выбери пункт <b>Import from clipboard</b><br>
+          (по-русски: Импорт из буфера обмена).<br>
+          Приложение само возьмёт скопированную ссылку.
+        </div>
+        <div class="step-note" id="i5n">
+          💡 Если пункт не появился — вернись на шаг 1 и снова скопируй конфиг
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title" id="i6t">Включи переключатель рядом с соединением</div>
+        <div class="step-desc" id="i6d">
+          В списке появится новая строчка — твоё подключение.<br>
+          Нажми переключатель рядом с ней чтобы включить.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title" id="i7t">Разреши VPN подключение</div>
+        <div class="step-desc" id="i7d">
+          iPhone покажет запрос — <b>«OneXray Would Like to Add VPN Configurations»</b><br>
+          Нажми <b>Allow</b> (Разрешить).<br>
+          Телефон может попросить Face ID или пароль — это нормально.
+        </div>
+        <div class="step-note" id="i7n">
+          🔒 Это стандартный запрос iOS. Без него VPN не работает ни в одном приложении.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <div class="step-title" id="i8t">Готово — ты в эфире!</div>
+        <div class="step-desc" id="i8d">
+          В верхней строке телефона появится надпись <b>VPN</b> — подключение активно.<br>
+          Теперь можно открывать любые сайты.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПРОВЕРКА -->
+  <div class="check-section">
+    <div class="check-title" id="checkTitle">✅ Как проверить что всё работает?</div>
+    <div class="check-desc" id="checkDesc">
+      Открой наш Telegram канал — если он открылся, значит подключение работает.<br>
+      Там же найдёшь поддержку и актуальные новости проекта.
+    </div>
+    <a href="https://t.me/radio_nodus" target="_blank" class="btn-tg" id="checkBtn">
+      📡 Открыть @radio_nodus
+    </a>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-title" id="faqTitle">ЧАСТЫЕ ВОПРОСЫ</div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="q1">Приложение просит много разрешений — это безопасно?</div>
+    <div class="faq-a" id="a1faq">Да. Все разрешения стандартны для VPN приложений — без них соединение физически невозможно. Мы не храним логи и не знаем что ты делаешь в интернете.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="q2">Конфиг не вставляется в приложение</div>
+    <div class="faq-a" id="a2faq">Вернись на главную страницу и снова нажми СКОПИРОВАТЬ КОНФИГ. Потом сразу открой приложение и попробуй импорт ещё раз.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="q3">Подключение есть, но сайты не открываются</div>
+    <div class="faq-a" id="a3faq">Попробуй выключить и снова включить соединение в приложении. Если не помогает — получи новый конфиг на главной странице.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="q4">Перестало работать через несколько дней</div>
+    <div class="faq-a" id="a4faq">Зайди на сайт и получи новый конфиг. Удали старое соединение из приложения и добавь новое.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" id="q5">Это бесплатно?</div>
+    <div class="faq-a" id="a5faq">Да, всегда. Проект живёт на добровольных донатах. Если хочешь поддержать — напиши /donate нашему боту @radionodus_bot</div>
+  </div>
+
+</div>
+
+<!-- НИЖНЕЕ МЕНЮ -->
+<nav class="bottom-nav">
+  <a href="index.html" class="nav-item">
+    <span class="nav-icon">🔌</span>
+    <span id="nav1">Подключить</span>
+  </a>
+  <a href="how.html" class="nav-item active">
+    <span class="nav-icon">📖</span>
+    <span id="nav2">Инструкция</span>
+  </a>
+  <a href="terminal.html" class="nav-item">
+    <span class="nav-icon">&gt;_</span>
+    <span id="nav3">Терминал</span>
+  </a>
+  <a href="storage.html" class="nav-item">
+    <span class="nav-icon">📁</span>
+    <span id="nav4">Хранилище</span>
+  </a>
+</nav>
+
+<script>
+const API_URL = "https://api.radionodus.net";
+let cachedSubUrl = null;
+let currentLang = "ru";
+let currentPlatform = "android";
+
+function showPlatform(p) {
+  currentPlatform = p;
+  document.getElementById("android").style.display = p === "android" ? "block" : "none";
+  document.getElementById("ios").style.display = p === "ios" ? "block" : "none";
+  document.getElementById("tabAndroid").classList.toggle("active", p === "android");
+  document.getElementById("tabIOS").classList.toggle("active", p === "ios");
+}
+
+// Автодетект устройства
+function detectPlatform() {
+  const ua = navigator.userAgent;
+  if (/iPhone|iPad|iPod/.test(ua)) showPlatform("ios");
+  else showPlatform("android");
+}
+
+async function copyVPN() {
+  const btn = document.getElementById("copyBtn");
+  const err = document.getElementById("errorMsg");
+  err.style.display = "none";
+  if (cachedSubUrl) { copyToClipboard(cachedSubUrl); return; }
+  btn.disabled = true;
+  btn.textContent = currentLang === "ru" ? "ПОДКЛЮЧЕНИЕ..." : "CONNECTING...";
+  try {
+    const r = await fetch(`${API_URL}/get-config`, {
+      method: "POST", headers: {"Content-Type": "application/json"}
+    });
+    if (r.status === 429) throw new Error(currentLang === "ru"
+      ? "Слишком много запросов. Попробуй через час."
+      : "Too many requests. Try again in an hour.");
+    if (!r.ok) throw new Error(currentLang === "ru"
+      ? "Ошибка сервера. Попробуй позже."
+      : "Server error. Try again later.");
+    const data = await r.json();
+    cachedSubUrl = data.subscription_url;
+    copyToClipboard(cachedSubUrl);
+  } catch(e) {
+    err.textContent = e.message;
+    err.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === "ru" ? "СКОПИРОВАТЬ КОНФИГ" : "COPY CONFIG";
+  }
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showCopied);
+  } else {
+    const i = document.createElement("input");
+    i.value = text; document.body.appendChild(i);
+    i.select(); document.execCommand("copy");
+    document.body.removeChild(i); showCopied();
+  }
+}
+
+function showCopied() {
+  const btn = document.getElementById("copyBtn");
+  btn.textContent = currentLang === "ru" ? "✓ СКОПИРОВАНО!" : "✓ COPIED!";
+  setTimeout(() => {
+    btn.textContent = currentLang === "ru" ? "СКОПИРОВАТЬ КОНФИГ" : "COPY CONFIG";
+  }, 2000);
+}
+
+window.onload = detectPlatform;
+
+function toggleLang() {
+  if (currentLang === "ru") {
+    currentLang = "en";
+    document.querySelector(".lang").textContent = "EN / RU";
+    document.getElementById("headerTitle").textContent = "📖 HOW TO CONNECT";
+    document.getElementById("copyBtn").textContent = "COPY CONFIG";
+    document.getElementById("tabAndroid").textContent = "🤖 Android";
+    document.getElementById("tabIOS").textContent = "🍎 iOS";
+    document.getElementById("dlAndroid").textContent = "⬇️ Download v2rayTun for Android";
+    document.getElementById("dlIOS").textContent = "⬇️ Download OneXray for iOS";
+    document.getElementById("checkTitle").textContent = "✅ How to check connection?";
+    document.getElementById("checkDesc").textContent = "Open our Telegram channel — if it opens, you are connected. Support and news are there too.";
+    document.getElementById("checkBtn").textContent = "📡 Open @radio_nodus";
+    document.getElementById("faqTitle").textContent = "FAQ";
+    document.getElementById("nav1").textContent = "Connect";
+    document.getElementById("nav2").textContent = "Guide";
+    document.getElementById("nav3").textContent = "Terminal";
+    document.getElementById("nav4").textContent = "Storage";
+  } else {
+    currentLang = "ru";
+    document.querySelector(".lang").textContent = "RU / EN";
+    document.getElementById("headerTitle").textContent = "📖 КАК ПОДКЛЮЧИТЬСЯ";
+    document.getElementById("copyBtn").textContent = "СКОПИРОВАТЬ КОНФИГ";
+    document.getElementById("tabAndroid").textContent = "🤖 Android";
+    document.getElementById("tabIOS").textContent = "🍎 iOS";
+    document.getElementById("dlAndroid").textContent = "⬇️ Скачать v2rayTun для Android";
+    document.getElementById("dlIOS").textContent = "⬇️ Скачать OneXray для iOS";
+    document.getElementById("checkTitle").textContent = "✅ Как проверить что всё работает?";
+    document.getElementById("checkDesc").textContent = "Открой наш Telegram канал — если он открылся, значит подключение работает. Там же найдёшь поддержку и актуальные новости.";
+    document.getElementById("checkBtn").textContent = "📡 Открыть @radio_nodus";
+    document.getElementById("faqTitle").textContent = "ЧАСТЫЕ ВОПРОСЫ";
+    document.getElementById("nav1").textContent = "Подключить";
+    document.getElementById("nav2").textContent = "Инструкция";
+    document.getElementById("nav3").textContent = "Терминал";
+    document.getElementById("nav4").textContent = "Хранилище";
+  }
+}
+</script>
+</body>
+</html>
