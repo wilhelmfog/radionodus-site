@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radionodus — Подключиться</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 24px 56px;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* ── TAGLINE ── */
+    .tagline {
+      font-size: 13px;
+      color: var(--text-dim);
+      text-align: center;
+      letter-spacing: .08em;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .tagline em {
+      font-style: normal;
+      color: var(--text-mid);
+    }
+
+    /* ── FLOW ── */
+    .flow {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* каждый блок: заголовок + кнопка или текст */
+    .flow-block {
+      width: 100%;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .flow-block:last-child { border-bottom: none; }
+
+    .flow-label {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .flow-label .arrow {
+      color: var(--green);
+      margin-right: 10px;
+    }
+
+    .flow-sub {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+    .flow-sub strong {
+      color: var(--text);
+    }
+
+    /* стрелка-разделитель между блоками */
+    .flow-arrow {
+      text-align: center;
+      color: var(--green);
+      font-size: 18px;
+      padding: 8px 0;
+      opacity: .5;
+    }
+
+    /* финальная строка */
+    .flow-result {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--green);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .flow-result em {
+      font-style: normal;
+      color: var(--text);
+    }
+
+    /* кнопки */
+    .btn-primary.copied { background: var(--green-mid); }
+
+    /* ссылка на инструкцию */
+    .how-link {
+      margin-top: 36px;
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+    .how-link a {
+      color: var(--text-mid);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .how-link a:hover { color: var(--green); border-color: var(--green); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">RADIONODUS</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Подключить</a>
+    <a href="how.html">Инструкция</a>
+    <a href="manifest.html">Манифест</a>
+  </div>
+</nav>
+
+<main>
+
+  <p class="tagline">
+    Мы не знаем кто ты.<br>
+    <em>Это и есть суть.</em>
+  </p>
+
+  <div class="flow">
+
+    <!-- ШАГ 1 — скачать приложение -->
+    <div class="flow-block">
+      <div class="flow-label">
+        <span class="arrow">↓</span>Скачай приложение
+      </div>
+      <a class="btn btn-primary" id="downloadBtn" href="#" target="_blank">
+        СКАЧАТЬ HIDDIFY
+      </a>
+    </div>
+
+    <!-- ШАГ 2 — забрать конфиг -->
+    <div class="flow-block">
+      <div class="flow-label">
+        Вернись сюда и забери конфиг
+      </div>
+      <button class="btn btn-outline" id="copyBtn" onclick="copySubscription()">
+        ЗАБРАТЬ КОНФИГ
+      </button>
+    </div>
+
+    <!-- ШАГ 3 — инструкция по импорту (зависит от платформы) -->
+    <div class="flow-block" id="step3">
+
+      <!-- ANDROID (default) -->
+      <div id="step3-android">
+        <div class="flow-label">
+          В приложении нажми&nbsp;<kbd style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:2px 8px;font-family:inherit;font-size:16px;color:var(--text)">+</kbd>
+        </div>
+        <div class="flow-sub">
+          В открывшемся меню выбери<br>
+          <strong>«Буфер обмена»</strong>&nbsp;—&nbsp;ссылка вставится автоматически
+        </div>
+        <div class="flow-result">
+          <span style="color:var(--green)">→</span>&nbsp;
+          Система определит твой конфиг и <em>автоматически выберет правильный протокол и маршрут</em>
+        </div>
+      </div>
+
+      <!-- iOS -->
+      <div id="step3-ios" style="display:none">
+        <div class="flow-label">Открой Karing и настрой</div>
+        <div class="flow-sub">
+          Разреши все запросы приложения&nbsp;→
+          выбери язык&nbsp;→
+          жми <strong>«Далее»</strong> на каждом экране.<br><br>
+          На последнем экране выбери<br>
+          <strong>«Копировать из буфера обмена»</strong>&nbsp;→
+          разреши вставку&nbsp;→
+          подтверди пин-кодом или Face&nbsp;ID
+        </div>
+        <div class="flow-result">
+          <span style="color:var(--green)">→</span>&nbsp;
+          Нажми кнопку запуска по центру внизу&nbsp;—
+          <em>автоматически определится самый быстрый узел</em>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <p class="how-link">
+    Первый раз? <a href="how.html">Подробная инструкция →</a>
+  </p>
+
+</main>
+
+<footer>
+  radionodus.net &nbsp;·&nbsp; <a href="manifest.html">манифест</a>
+</footer>
+
+<script>
+  const SUB_URL        = 'http://91.142.75.205/sub';
+  const HIDDIFY_ANDROID = 'https://play.google.com/store/apps/details?id=app.hiddify.com';
+  const KARING_IOS      = 'https://apps.apple.com/app/karing/id6472431552';
+
+  const ua  = navigator.userAgent;
+  const btn = document.getElementById('downloadBtn');
+
+  if (/iPad|iPhone|iPod/.test(ua)) {
+    btn.href        = KARING_IOS;
+    btn.textContent = 'СКАЧАТЬ KARING — iOS';
+    document.getElementById('step3-android').style.display = 'none';
+    document.getElementById('step3-ios').style.display     = 'block';
+  } else if (/Android/.test(ua)) {
+    btn.href        = HIDDIFY_ANDROID;
+    btn.textContent = 'СКАЧАТЬ HIDDIFY — ANDROID';
+  } else {
+    btn.href        = 'how.html#desktop';
+    btn.textContent = 'ИНСТРУКЦИЯ ДЛЯ КОМПЬЮТЕРА →';
+  }
+
+  function copySubscription() {
+    const b = document.getElementById('copyBtn');
+    const done = () => {
+      b.textContent = '✓  СКОПИРОВАНО';
+      b.classList.add('copied');
+      setTimeout(() => {
+        b.textContent = 'ЗАБРАТЬ КОНФИГ';
+        b.classList.remove('copied');
+      }, 2500);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(SUB_URL).then(done).catch(() => fallback(done));
+    } else {
+      fallback(done);
+    }
+  }
+
+  function fallback(cb) {
+    const el = document.createElement('input');
+    el.value = SUB_URL;
+    el.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(el);
+    el.focus(); el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    cb();
+  }
+</script>
+</body>
+</html>
